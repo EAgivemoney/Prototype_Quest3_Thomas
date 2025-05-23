@@ -4,7 +4,14 @@ using UnityEngine;
 
 public class Mover : MonoBehaviour
 {
-    [SerializeField] float moveSpeed = 10f;
+    public float moveSpeed = 10f;
+    public GameObject bulletTimeOverlay;
+
+    void Start()
+    {
+        if (bulletTimeOverlay != null)
+            bulletTimeOverlay.SetActive(false);
+    }
 
     void Update()
     {
@@ -18,4 +25,18 @@ public class Mover : MonoBehaviour
         transform.Translate(xValue, 0, yValue);
     }
 
+    public IEnumerator SlowDownTime()
+    {
+        if (bulletTimeOverlay != null)
+            bulletTimeOverlay.SetActive(true);
+
+        Time.timeScale = 0.5f;
+        print("Time slowed down!");
+        yield return new WaitForSeconds(1f);
+        Time.timeScale = 1f;
+        print("Time back to normal!");
+
+        if (bulletTimeOverlay != null)
+            bulletTimeOverlay.SetActive(false);
+    }
 }
